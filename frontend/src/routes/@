@@ -1,1 +1,100 @@
-test
+<script>
+var bordArray = [
+[1,0,1,0,1,0,1,0],
+[0,1,0,1,0,1,0,1],
+[1,0,1,0,1,0,1,0],
+[0,0,0,0,0,0,0,0],
+[0,0,0,0,0,0,0,0],
+[2,0,2,0,2,0,2,0],
+[0,2,0,2,0,2,0,2],
+[2,0,2,0,2,0,2,0],
+]
+
+var endX
+var endY
+var startX
+var startY
+
+
+var handleDragEnter = (x,y)=>{
+  endX= x
+  endY = y
+}
+
+
+var handleDragEnd = ()=>{
+  console.log("end"+endX+endY)
+  console.log("start"+startX+startY)
+  // empty last field
+  // fill new field
+  bordArray[endX][endY] = bordArray[startY][startX]
+  bordArray[startY][startX] = 0
+
+  bordArray.push(bordArray)
+  console.log(bordArray)
+}
+
+var handleDragStart = (x,y)=>{
+  startX = x
+  startY = y
+}
+
+
+</script>
+<table>
+{#each bordArray as row,x}
+  <tr>
+      {#each row as item,y}
+         <td 
+       >
+          <div class="block" 
+            on:dragenter={()=>{handleDragEnter(x,y)}} 
+          >
+          {#if item == 1}
+              <div class="red" draggable="true"
+                on:dragstart={()=>{handleDragStart(x,y)}}
+            		on:dragend={handleDragEnd}
+              ></div>
+          {/if}
+          {#if item == 2}
+              <div class="black" draggable="true"
+                on:dragstart={()=>{handleDragStart(x,y)}}
+            		on:dragend={handleDragEnd}>
+               </div>
+          {/if}
+              </div>
+        </td> 
+        
+      {/each}
+    
+  </tr>
+  {/each}
+  </table>
+
+
+
+<style>
+
+  .block {
+    width:50px;
+    height:50px;
+    border: 2px solid black;
+  }
+
+  .red{
+    background-color: red;
+    width:40px;
+    height:40px;
+    border-radius: 25px;
+    margin: 0 auto;
+  }
+
+  .black{
+    background-color:black;
+    width:40px;
+    height:40px;
+    border-radius: 25px;
+    margin: 0 auto;
+  }
+
+</style>
